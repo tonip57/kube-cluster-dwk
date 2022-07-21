@@ -1,0 +1,25 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: project-repo
+  namespace: flux-system
+spec:
+  interval: 10m
+  url: https://github.com/tonip57/dowk
+  ref:
+    branch: main
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: backend-go-app
+  namespace: flux-system
+spec:
+  sourceRef:
+    kind: GitRepository
+    name: project-repo
+  interval: 10m
+  path: ./part4/project/backend/manifests
+  prune: true
+  validation: client
